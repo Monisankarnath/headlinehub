@@ -7,7 +7,12 @@ import {
 } from '../types/api.types';
 import {makeGetRequest} from '../services/https.service';
 import {ENDPOINT_URL} from '../constants';
-import {processNewsHeadlinesResponse, setNewsInLocalStorage} from '../utils';
+import {
+  getNewsFromLocalStorage,
+  processNewsHeadlinesResponse,
+  setNewsInLocalStorage,
+} from '../utils';
+import {fetch} from '@react-native-community/netinfo';
 
 const useAppStore = create<StoreInitialState>((set, get) => ({
   newsHeadlines: [],
@@ -17,6 +22,12 @@ const useAppStore = create<StoreInitialState>((set, get) => ({
   fetchHeadlines: async () => {
     set({loading: true, error: null});
     try {
+      const {isConnected} = await fetch();
+      if (!isConnected) {
+        const articles = getNewsFromLocalStorage();
+        set({newsHeadlines: articles, loading: false});
+        return;
+      }
       const {page} = get();
       const queryParams = {
         q: 'technology',
@@ -27,7 +38,6 @@ const useAppStore = create<StoreInitialState>((set, get) => ({
         ENDPOINT_URL.EVERYTHING,
         queryParams,
       );
-      console.log('store response 1', response);
       const newsHeadlines: INewsArticle[] =
         processNewsHeadlinesResponse(response);
       set({newsHeadlines: newsHeadlines, loading: false});
