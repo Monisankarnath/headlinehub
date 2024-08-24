@@ -7,9 +7,17 @@ import {
   Text,
 } from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import useAppStore from './src/store';
 import {THEME} from './src/theme';
+import {getNewsFromLocalStorage} from './src/utils';
 
 function App(): React.JSX.Element {
+  const {fetchHeadlines} = useAppStore();
+  const news = getNewsFromLocalStorage();
+  console.log('===>>> app.tsx, news', news);
+  React.useEffect(() => {
+    fetchHeadlines();
+  }, []);
   return (
     <SafeAreaView style={styles.container}>
       <GestureHandlerRootView style={styles.container}>
