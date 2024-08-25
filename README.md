@@ -77,6 +77,5 @@ npm run android
 
 ## <a name="assumptions">🕸️ Assumptions</a>
 
-- The app will be run on an android device.
-- The user's internet connection is stable and fast.
 - The API used for fetching news headlines has a limit of requests per minute so the user must not use the app too frequently.
+- The user's internet connection is stable and fast.
