@@ -11,10 +11,14 @@ export const useGetHeadlines = () => {
     fetchHeadlines,
     loading,
   } = useAppStore();
-
   const [currentHeadlines, setCurrentHeadlines] = useState<INewsArticle[]>([]);
   const intervalRef = useRef<number | null>(null);
-
+  const deleteArticle = (id: string) => {
+    const updatedHeadlines = currentHeadlines.filter(
+      article => article.id !== id,
+    );
+    setCurrentHeadlines(updatedHeadlines);
+  };
   const clearHeadlineInterval = () => {
     if (intervalRef.current !== null) {
       clearInterval(intervalRef.current);
@@ -30,11 +34,17 @@ export const useGetHeadlines = () => {
   }, [incrementLocalPageNumber]);
 
   const updateHeadlines = useCallback(() => {
-    const start = (localPageNumber - 1) * 5;
-    const end = localPageNumber * 5;
+    const numberOfArticles = localPageNumber === 1 ? 10 : 5;
+    const startNegative = localPageNumber === 1 ? 1 : 0;
+    const start = (localPageNumber - startNegative) * numberOfArticles;
+    const end = start + numberOfArticles;
     const nextHeadlines = newsHeadlines.slice(start, end);
+    console.log('start end', start, end);
     if (nextHeadlines.length > 0) {
-      setCurrentHeadlines(nextHeadlines);
+      setCurrentHeadlines(prevHeadlines => [
+        ...nextHeadlines,
+        ...prevHeadlines,
+      ]);
     }
     startInterval();
     if (start >= newsHeadlines.length) {
@@ -64,5 +74,5 @@ export const useGetHeadlines = () => {
     return () => clearHeadlineInterval();
   }, [loading, localPageNumber, newsHeadlines, updateHeadlines]);
 
-  return {currentHeadlines, loadNextHeadlines};
+  return {currentHeadlines, loadNextHeadlines, deleteArticle};
 };

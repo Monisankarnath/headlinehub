@@ -17,6 +17,7 @@ import Reanimated, {
 
 type HeadLineCardProps = {
   item: INewsArticle;
+  deleteArticle: (id: string) => void;
 };
 type RightActionProps = {
   drag: SharedValue<number>;
@@ -31,7 +32,10 @@ const RightAction = ({drag, children}: RightActionProps) => {
 
   return <Reanimated.View style={styleAnimation}>{children}</Reanimated.View>;
 };
-export const HeadLineCard: React.FC<HeadLineCardProps> = ({item}) => {
+export const HeadLineCard: React.FC<HeadLineCardProps> = ({
+  item,
+  deleteArticle,
+}) => {
   const {setPinnedHeadlines} = useAppStore();
   const swipeableRow = useRef<SwipeableMethods>(null);
   const {title, author, publishedAt, source, urlToImage} = item;
@@ -45,6 +49,14 @@ export const HeadLineCard: React.FC<HeadLineCardProps> = ({item}) => {
     closeSwipeable();
     setPinnedHeadlines({article});
   };
+  const handleDelete = (article: INewsArticle) => {
+    closeSwipeable();
+    if (article.isPinned) {
+      setPinnedHeadlines({article});
+    } else {
+      deleteArticle(article.id);
+    }
+  };
   const renderRightActions = (
     _: any,
     dragAnimatedValue: SharedValue<number>,
@@ -53,12 +65,8 @@ export const HeadLineCard: React.FC<HeadLineCardProps> = ({item}) => {
       <RightAction drag={dragAnimatedValue}>
         <View style={styles.swipeContainer}>
           <TouchableOpacity
-            disabled={!item.isPinned}
-            onPress={() => handlePin(item)}
-            style={[
-              styles.actionContainer,
-              {opacity: item.isPinned ? 1 : 0.5},
-            ]}>
+            onPress={() => handleDelete(item)}
+            style={styles.actionContainer}>
             <Image
               source={deleteBin}
               resizeMode="contain"
@@ -104,13 +112,13 @@ export const HeadLineCard: React.FC<HeadLineCardProps> = ({item}) => {
             <Image
               source={{uri: urlToImage}}
               style={styles.image}
-              resizeMode="cover"
+              resizeMode="contain"
             />
           ) : (
             <Image
               source={altNewsImage}
               style={styles.image}
-              resizeMode="cover"
+              resizeMode="contain"
             />
           )}
         </View>

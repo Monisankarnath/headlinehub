@@ -82,10 +82,11 @@ const useAppStore = create<StoreInitialState>((set, get) => ({
         );
       } else {
         // add if not pinned
+        const dateString = new Date().toLocaleDateString();
         const updatedArticle = {
           ...article,
           isPinned: true,
-          id: `${new Date().toISOString()}_${article.id}`,
+          id: `${dateString}_${article.id}`,
         };
 
         const updatedArticles = [...pinnedArticles, updatedArticle];
@@ -95,6 +96,11 @@ const useAppStore = create<StoreInitialState>((set, get) => ({
     } else {
       set({pinnedArticles: pinnedArticles});
     }
+  },
+  deleteHeadlines: (id: string) => {
+    const {newsHeadlines} = get();
+    const updatedHeadlines = newsHeadlines.filter(article => article.id !== id);
+    set({newsHeadlines: updatedHeadlines});
   },
 }));
 

@@ -5,10 +5,14 @@ import useAppStore from './src/store';
 import {THEME} from './src/theme';
 import {AppHeader, Headlines} from './src/components';
 import {useGetHeadlines} from './src/hooks';
+import {LogBox} from 'react-native';
 
 function App(): React.JSX.Element {
   const {fetchHeadlines, setPinnedHeadlines} = useAppStore();
-  const {currentHeadlines, loadNextHeadlines} = useGetHeadlines();
+  const {currentHeadlines, loadNextHeadlines, deleteArticle} =
+    useGetHeadlines();
+  LogBox.ignoreLogs(['Warning: ...']);
+  LogBox.ignoreAllLogs();
   React.useEffect(() => {
     fetchHeadlines();
     setPinnedHeadlines({article: null});
@@ -22,7 +26,10 @@ function App(): React.JSX.Element {
         />
         <View style={styles.container}>
           <AppHeader loadNextHeadlines={loadNextHeadlines} />
-          <Headlines headlines={currentHeadlines} />
+          <Headlines
+            headlines={currentHeadlines}
+            deleteArticle={deleteArticle}
+          />
         </View>
       </GestureHandlerRootView>
     </SafeAreaView>
