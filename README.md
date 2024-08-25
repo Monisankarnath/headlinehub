@@ -1,79 +1,80 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+## 📋 Table of Contents
 
-# Getting Started
+1. 🤖 [Introduction](#introduction)
+2. ⚙️ [Tech Stack](#tech-stack)
+3. 🔋 [Features](#features)
+4. 🤸 [Quick Start](#quick-start)
+5. 🕸️ [Assumptions](#assumptions)
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+## 🚨 Tutorial
 
-## Step 1: Start the Metro Server
+A small recording has been added here, <a href="https://drive.google.com/file/d/11bBbccy-2I6UCbpX1MkQ_8jksis2JoYo/view?usp=sharing" target="_blank">Drive Link</a>.
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+## <a name="introduction">🤖 Introduction</a>
 
-To start Metro, run the following command from the _root_ of your React Native project:
+This is a small React Native app that fetches top news headlines for technology from the News API and displays them in a list.
+
+## <a name="tech-stack">⚙️ Tech Stack</a>
+
+- React Native
+- Axios
+- Zustand
+- RN Reanimated
+- RN Gesture Handler
+- React Native mmkv
+
+## <a name="features">🔋 Features</a>
+
+👉 **Pin Headlines**: Users can pin their favorite headlines for easy access which will get stored in the local storage.
+
+👉 **Load Next Headlines**: The app fetches next set of news headlines every 10 seconds automatically. The user can manually fetch more by tapping on a button.
+
+## <a name="quick-start">🤸 Quick Start</a>
+
+Follow these steps to set up the project locally on your machine.
+
+**Prerequisites**
+
+Make sure you have the following installed on your machine:
+
+- [Git](https://git-scm.com/)
+- [Node.js](https://nodejs.org/en)
+- [npm](https://www.npmjs.com/) (Node Package Manager)
+
+**Cloning the Repository**
 
 ```bash
-# using npm
-npm start
-
-# OR using Yarn
-yarn start
+git clone https://github.com/Monisankarnath/headlinehub.git
+cd headlinehub
 ```
 
-## Step 2: Start your Application
+**Installation**
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
-
-### For Android
+Install the project dependencies using npm:
 
 ```bash
-# using npm
+npm install
+```
+
+**Set Up Environment Variables**
+
+Create a new file named `.env` in the root of your project and add the following content:
+Get your own NEWS_API_KEY from [https://newsapi.org](https://newsapi.org).
+
+```env
+ENV_BASE_URL=https://newsapi.org/v2
+NEWS_API_KEY=<YOUR NEWS API KEY>
+
+```
+
+**Running the Project**
+
+```bash
 npm run android
-
-# OR using Yarn
-yarn android
 ```
 
-### For iOS
+## <a name="assumptions">🕸️ Assumptions</a>
 
-```bash
-# using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
-```
-
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
-
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
-
-## Step 3: Modifying your App
-
-Now that you have successfully run the app, let's modify it.
-
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
-
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+- The app will be run on an android device.
+- The user's internet connection is stable and fast.
+- The API used for fetching news headlines has a limit of requests per minute so the user must not use the app too frequently.
