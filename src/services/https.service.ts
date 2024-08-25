@@ -17,6 +17,7 @@ const makeRequest = async <T>(
     const resp = await axiosInstance(axiosParams);
     return _processApiResponse<T>(resp);
   } catch (error) {
+    console.log('Error in service', error);
     return _processError<T>(error);
   }
 };

@@ -1,20 +1,26 @@
 import {MMKV} from 'react-native-mmkv';
-import {STORAGE} from '../constants';
 
 const storage = new MMKV();
 
-export const setNewsInLocalStorage = (value: any) => {
-  storage.set(STORAGE.NEWS_HEADLINES, JSON.stringify(value));
+export const setNewsInLocalStorage = (key: string, value: any) => {
+  storage.set(key, JSON.stringify(value));
 };
 
-export const getNewsFromLocalStorage = () => {
-  if (storage.contains(STORAGE.NEWS_HEADLINES)) {
-    const jsonNews = storage.getString(STORAGE.NEWS_HEADLINES) || '';
-    return JSON.parse(jsonNews);
+export const getNewsFromLocalStorage = (key: string) => {
+  try {
+    if (storage.contains(key)) {
+      const jsonNews = storage.getString(key) || '';
+      return JSON.parse(jsonNews);
+    }
+    return [];
+  } catch (error) {
+    return [];
   }
-  return [];
 };
 
 export const clearLocalStorage = () => {
   storage.clearAll();
+};
+export const deleteFromLocalStorage = (key: string) => {
+  storage.delete(key);
 };

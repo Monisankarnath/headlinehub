@@ -3,10 +3,11 @@ import {
   IApiResponse,
   INewsArticle,
   NewsApiResponse,
+  PinnedHeadlinesProps,
   StoreInitialState,
 } from '../types/api.types';
 import {makeGetRequest} from '../services/https.service';
-import {ENDPOINT_URL} from '../constants';
+import {ENDPOINT_URL, STORAGE} from '../constants';
 import {
   getNewsFromLocalStorage,
   processNewsHeadlinesResponse,
@@ -19,12 +20,14 @@ const useAppStore = create<StoreInitialState>((set, get) => ({
   loading: false,
   error: null,
   page: 1,
+  localPageNumber: 1,
+  pinnedArticles: [],
   fetchHeadlines: async () => {
-    set({loading: true, error: null});
+    set({loading: true, error: null, localPageNumber: 1});
     try {
       const {isConnected} = await fetch();
       if (!isConnected) {
-        const articles = getNewsFromLocalStorage();
+        const articles = getNewsFromLocalStorage(STORAGE.NEWS_HEADLINES);
         set({newsHeadlines: articles, loading: false});
         return;
       }
@@ -41,12 +44,57 @@ const useAppStore = create<StoreInitialState>((set, get) => ({
       const newsHeadlines: INewsArticle[] =
         processNewsHeadlinesResponse(response);
       set({newsHeadlines: newsHeadlines, loading: false});
-      setNewsInLocalStorage(newsHeadlines);
+      setNewsInLocalStorage(STORAGE.NEWS_HEADLINES, newsHeadlines);
     } catch (error: any) {
+      console.log('Error in api', error);
       set({
         error: error.message,
         loading: false,
       });
+    }
+  },
+  incrementLocalPageNumber: () => {
+    set(state => ({localPageNumber: state.localPageNumber + 1}));
+  },
+  incrementNewsApiPageNumber: () => {
+    set(state => ({page: state.page + 1}));
+  },
+  setPinnedHeadlines: ({article}: PinnedHeadlinesProps) => {
+    console.log('Pinned called => ', article);
+    const pinnedArticles = getNewsFromLocalStorage(STORAGE.PINNED_ARTICLES);
+    if (article) {
+      const isArticleAlreadyPinned = pinnedArticles.some(
+        (item: INewsArticle) => article.id === item.id,
+      );
+
+      if (isArticleAlreadyPinned) {
+        // remove if already pinned
+        const updatedArticle = {
+          ...article,
+          isPinned: false,
+        };
+        const removedFromPinnedArticles = pinnedArticles.filter(
+          (item: INewsArticle) => item.id !== updatedArticle.id,
+        );
+        set({pinnedArticles: removedFromPinnedArticles});
+        setNewsInLocalStorage(
+          STORAGE.PINNED_ARTICLES,
+          removedFromPinnedArticles,
+        );
+      } else {
+        // add if not pinned
+        const updatedArticle = {
+          ...article,
+          isPinned: true,
+          id: `${new Date().toISOString()}_${article.id}`,
+        };
+
+        const updatedArticles = [...pinnedArticles, updatedArticle];
+        set({pinnedArticles: updatedArticles});
+        setNewsInLocalStorage(STORAGE.PINNED_ARTICLES, updatedArticles);
+      }
+    } else {
+      set({pinnedArticles: pinnedArticles});
     }
   },
 }));

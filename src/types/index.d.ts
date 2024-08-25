@@ -6,3 +6,7 @@ declare module '@env' {
 declare type QueryParamsType = Record<string | number, string | number> | null;
 
 declare type REQ_METHODS_TYPE = 'GET';
+
+declare type AppHeaderProps = {
+  loadNextHeadlines: () => void;
+};

@@ -8,6 +8,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   config => {
+    console.log('Request interceptor invoked');
     config.params = {...config.params, apiKey: NEWS_API_KEY};
     return config;
   },

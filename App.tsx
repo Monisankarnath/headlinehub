@@ -1,20 +1,18 @@
 import React from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-} from 'react-native';
+import {SafeAreaView, StatusBar, StyleSheet, View} from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import useAppStore from './src/store';
 import {THEME} from './src/theme';
+import {AppHeader, Headlines} from './src/components';
+import {useGetHeadlines} from './src/hooks';
 
 function App(): React.JSX.Element {
-  const {fetchHeadlines} = useAppStore();
+  const {fetchHeadlines, setPinnedHeadlines} = useAppStore();
+  const {currentHeadlines, loadNextHeadlines} = useGetHeadlines();
   React.useEffect(() => {
     fetchHeadlines();
-  }, []);
+    setPinnedHeadlines({article: null});
+  }, [fetchHeadlines, setPinnedHeadlines]);
   return (
     <SafeAreaView style={styles.container}>
       <GestureHandlerRootView style={styles.container}>
@@ -22,9 +20,10 @@ function App(): React.JSX.Element {
           barStyle="dark-content"
           backgroundColor={THEME.colors.background}
         />
-        <ScrollView contentContainerStyle={styles.container}>
-          <Text>HeadlineHub</Text>
-        </ScrollView>
+        <View style={styles.container}>
+          <AppHeader loadNextHeadlines={loadNextHeadlines} />
+          <Headlines headlines={currentHeadlines} />
+        </View>
       </GestureHandlerRootView>
     </SafeAreaView>
   );
@@ -34,6 +33,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: THEME.colors.background,
+  },
+  activityContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 

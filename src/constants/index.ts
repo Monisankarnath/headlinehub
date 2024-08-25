@@ -1,5 +1,6 @@
 export const STORAGE = {
   NEWS_HEADLINES: 'newsHeadlines',
+  PINNED_ARTICLES: 'pinnedArticles',
 };
 
 export const HTTP_REQ_METHODS: Record<REQ_METHODS_TYPE, REQ_METHODS_TYPE> = {
