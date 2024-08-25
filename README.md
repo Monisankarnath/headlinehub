@@ -25,6 +25,8 @@ This is a small React Native app that fetches top news headlines for technology 
 
 ## <a name="features">🔋 Features</a>
 
+👉 **Offline News**: This app supports offline mode, meaning it will load the saved news from the local storage if user had internet connection lost or is not available.
+
 👉 **Pin Headlines**: Users can pin their favorite headlines for easy access which will get stored in the local storage.
 
 👉 **Load Next Headlines**: The app fetches next set of news headlines every 10 seconds automatically. The user can manually fetch more by tapping on a button.
