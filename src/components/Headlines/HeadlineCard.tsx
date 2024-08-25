@@ -9,6 +9,8 @@ import ReanimatedSwipeable, {
   SwipeableMethods,
 } from 'react-native-gesture-handler/ReanimatedSwipeable';
 import Reanimated, {
+  FadeIn,
+  FadeOut,
   SharedValue,
   useAnimatedStyle,
 } from 'react-native-reanimated';
@@ -89,7 +91,7 @@ export const HeadLineCard: React.FC<HeadLineCardProps> = ({item}) => {
       leftThreshold={80}
       rightThreshold={40}
       renderRightActions={renderRightActions}>
-      <View style={styles.card}>
+      <Reanimated.View style={styles.card} entering={FadeIn} exiting={FadeOut}>
         <View style={styles.timeContainer}>
           <Text style={styles.sourceName}>{source.name}</Text>
           <Text style={styles.time}>{time}</Text>
@@ -113,7 +115,7 @@ export const HeadLineCard: React.FC<HeadLineCardProps> = ({item}) => {
           )}
         </View>
         <Text style={styles.author}>{author}</Text>
-      </View>
+      </Reanimated.View>
     </ReanimatedSwipeable>
   );
 };
