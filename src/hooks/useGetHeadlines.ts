@@ -33,7 +33,6 @@ export const useGetHeadlines = () => {
     const start = (localPageNumber - 1) * 5;
     const end = localPageNumber * 5;
     const nextHeadlines = newsHeadlines.slice(start, end);
-    console.log('localPageNumber', localPageNumber, nextHeadlines.length);
     if (nextHeadlines.length > 0) {
       setCurrentHeadlines(nextHeadlines);
     }

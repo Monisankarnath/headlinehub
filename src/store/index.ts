@@ -60,7 +60,6 @@ const useAppStore = create<StoreInitialState>((set, get) => ({
     set(state => ({page: state.page + 1}));
   },
   setPinnedHeadlines: ({article}: PinnedHeadlinesProps) => {
-    console.log('Pinned called => ', article);
     const pinnedArticles = getNewsFromLocalStorage(STORAGE.PINNED_ARTICLES);
     if (article) {
       const isArticleAlreadyPinned = pinnedArticles.some(
