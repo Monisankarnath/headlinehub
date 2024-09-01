@@ -23,10 +23,11 @@ type RightActionProps = {
   drag: SharedValue<number>;
   children: React.ReactNode;
 };
+const RIGHT_ACTION_CONTAINER_WIDTH = 80;
 const RightAction = ({drag, children}: RightActionProps) => {
   const styleAnimation = useAnimatedStyle(() => {
     return {
-      transform: [{translateX: drag.value + 80}],
+      transform: [{translateX: drag.value + RIGHT_ACTION_CONTAINER_WIDTH}],
     };
   });
 
@@ -42,7 +43,7 @@ export const HeadLineCard: React.FC<HeadLineCardProps> = ({
   const time = formatDate(publishedAt);
   const closeSwipeable = () => {
     if (swipeableRow.current) {
-      swipeableRow.current.close();
+      swipeableRow.current.reset();
     }
   };
   const handlePin = (article: INewsArticle) => {
@@ -96,8 +97,8 @@ export const HeadLineCard: React.FC<HeadLineCardProps> = ({
     <ReanimatedSwipeable
       ref={swipeableRow}
       friction={2}
-      leftThreshold={80}
-      rightThreshold={40}
+      leftThreshold={RIGHT_ACTION_CONTAINER_WIDTH}
+      rightThreshold={RIGHT_ACTION_CONTAINER_WIDTH / 2}
       renderRightActions={renderRightActions}>
       <Reanimated.View style={styles.card} entering={FadeIn} exiting={FadeOut}>
         <View style={styles.timeContainer}>
@@ -168,7 +169,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     gap: 10,
     paddingVertical: 20,
-    width: 80,
+    width: RIGHT_ACTION_CONTAINER_WIDTH,
     alignItems: 'center',
   },
   actionContainer: {flexDirection: 'column', alignItems: 'center', gap: 4},
